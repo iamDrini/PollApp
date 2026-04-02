@@ -1,0 +1,69 @@
+section {
+    background-color: #35273a;
+}
+
+.content {
+    padding: 0 199px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    gap: 56px;
+
+    .ending-soon {
+        font-family: 'Mulish';
+        color: white;
+        font-size: 32px;
+        font-weight: 500;
+    }
+}
+
+.ending-surveys-polls {
+    padding: 34px 0 40px 0;
+    display: flex;
+    justify-content: space-between;
+    gap: 32px;
+}
+
+.ending-poll {
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 40px 44px 60px 44px;
+    border-top-right-radius: 80px;
+    width: 321px;
+    height: 310px;
+
+    .category-title-container {
+        display:flex;
+        flex-direction: column;
+        gap: 8px;
+        .category {
+            font-family: 'Mulish';
+            font-size: 24px;
+            font-weight: 600;
+        }
+        .title-poll{
+            font-family: 'Mulish';
+            font-size: 40px;
+            font-weight: 700;       
+        }
+    }
+    .countdown{
+        font-family: 'Mulish';
+        font-size: 16px;
+        font-weight: 500;
+        background-color: #FFCFA1;
+        border-top-right-radius: 14px;
+        width: fit-content;
+        padding: 3px 6px;
+    }
+}
+
+.survey-collection-content{
+    .filter-options{
+        display:flex;
+        justify-content: space-between;
+    }
+}

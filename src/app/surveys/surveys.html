@@ -1,1 +1,76 @@
-<p>surveys works!</p>
+<section>
+    <div class="content">
+        <h4>Your surveys</h4>
+        <div class="ending-surveys-content">
+            <span class="ending-soon">Ending soon surveys</span>
+            <div class="ending-surveys-polls">
+                @for(item of getEndingSoonPolls(); track item.id){
+                <div [routerLink]="" class="ending-poll">
+                    <div class="category-title-container">
+                        <span class="category">{{item.category}}</span>
+                        <span class="title-poll">{{item.title}}</span>
+                    </div>
+                    <span class="countdown">
+                        Ends in {{ getDaysLeft(item.ends_at) }}
+                        @if (getDaysLeft(item.ends_at) === 1) {
+                        Day
+                        } @else {
+                        Days
+                        }
+                    </span>
+                </div>
+                }@empty {
+                <p>There are currently no polls.</p>
+                }
+            </div>
+        </div>
+        <div class="survey-collection-content">
+            <div class="filter-options">
+                <div class="survey-filter-buttons">
+                    <button type="button" [class.active-filter]="isActive" (click)="setFilter(true)">Active survey</button>
+                    <button type="button" [class.active-filter]="!isActive" (click)="setFilter(false)">Past survey</button>
+                </div>
+                <button>
+                    <span>Sort by categories</span>
+                    <img src="img/arrow_down_white.png" alt="">
+                    <img src="img/arrow_down_orange.png" alt="">
+                    <img src="img/arrow_up_orange.png" alt="">
+                </button>
+            </div>
+            <div class="survey-collection">
+                @if (isActive) {
+                    @for (item of getActivePolls(); track item.id) {
+                        <div [routerLink]="" class="survey">
+                            <div class="">
+                                <span class="">{{ item.category }}</span>
+                                <span class="">{{ item.title }}</span>
+                            </div>
+                            <span class="countdown">
+                                Ends in {{ getDaysLeft(item.ends_at) }}
+                                @if (getDaysLeft(item.ends_at) === 1) {
+                                Day
+                                } @else {
+                                Days
+                                }
+                            </span>
+                        </div>
+                    } @empty {
+                        <p>There are currently no active polls.</p>
+                    }
+                } @else {
+                    @for (item of getPastPolls(); track item.id) {
+                        <div [routerLink]="" class="">
+                            <div class="">
+                                <span class="">{{ item.category }}</span>
+                                <span class="">{{ item.title }}</span>
+                            </div>
+                            <span class="countdown">Ended</span>
+                        </div>
+                    } @empty {
+                        <p>There are currently no past polls.</p>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</section>
