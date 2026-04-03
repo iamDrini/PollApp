@@ -10,65 +10,95 @@
                         <span class="category">{{item.category}}</span>
                         <span class="title-poll">{{item.title}}</span>
                     </div>
-                    <span class="countdown">
-                        Ends in {{ getDaysLeft(item.ends_at) }}
-                        @if (getDaysLeft(item.ends_at) === 1) {
-                        Day
-                        } @else {
-                        Days
-                        }
-                    </span>
+                    <div class="countdown-container">
+                        <span class="countdown">
+                            Ends in {{ getDaysLeft(item.ends_at) }}
+                            @if (getDaysLeft(item.ends_at) === 1) {
+                            Day
+                            } @else {
+                            Days
+                            }
+                        </span>
+                    </div>
                 </div>
                 }@empty {
-                <p>There are currently no polls.</p>
+                <p class="no-polls-message">There are currently no polls.</p>
                 }
             </div>
         </div>
         <div class="survey-collection-content">
             <div class="filter-options">
                 <div class="survey-filter-buttons">
-                    <button type="button" [class.active-filter]="isActive" (click)="setFilter(true)">Active survey</button>
-                    <button type="button" [class.active-filter]="!isActive" (click)="setFilter(false)">Past survey</button>
+                    <button type="button" [class.active-filter]="isActive" (click)="setFilter(true)">Active
+                        survey</button>
+                    <button type="button" [class.active-filter]="!isActive" (click)="setFilter(false)">Past
+                        survey</button>
                 </div>
-                <button>
-                    <span>Sort by categories</span>
-                    <img src="img/arrow_down_white.png" alt="">
-                    <img src="img/arrow_down_orange.png" alt="">
-                    <img src="img/arrow_up_orange.png" alt="">
-                </button>
+                <div class="category-dropdown">
+                    <button
+                        type="button"
+                        class="category-dropdown-toggle"
+                        [class.open]="isCategoryDropdownOpen"
+                        [attr.aria-expanded]="isCategoryDropdownOpen"
+                        aria-haspopup="menu"
+                        (click)="toggleCategoryDropdown()">
+                        <span>{{ selectedCategory === 'All categories' ? 'Sort by categories' : selectedCategory }}</span>
+                        <img class="arrow-default" src="img/arrow_down_white.png" alt="" aria-hidden="true">
+                        <img class="arrow-hover" src="img/arrow_down_orange.png" alt="" aria-hidden="true">
+                        <img class="arrow-open" src="img/arrow_up_orange.png" alt="" aria-hidden="true">
+                    </button>
+
+                    @if (isCategoryDropdownOpen) {
+                    <div class="category-dropdown-menu" role="menu">
+                        @for (category of getCategories(); track category) {
+                        <button
+                            type="button"
+                            class="category-option"
+                            [class.selected]="selectedCategory === category"
+                            (click)="setCategory(category)">
+                            {{ category }}
+                        </button>
+                        }
+                    </div>
+                    }
+                </div>
             </div>
             <div class="survey-collection">
                 @if (isActive) {
-                    @for (item of getActivePolls(); track item.id) {
-                        <div [routerLink]="" class="survey">
-                            <div class="">
-                                <span class="">{{ item.category }}</span>
-                                <span class="">{{ item.title }}</span>
-                            </div>
-                            <span class="countdown">
-                                Ends in {{ getDaysLeft(item.ends_at) }}
-                                @if (getDaysLeft(item.ends_at) === 1) {
-                                Day
-                                } @else {
-                                Days
-                                }
-                            </span>
-                        </div>
-                    } @empty {
-                        <p>There are currently no active polls.</p>
-                    }
+                @for (item of getActivePolls(); track item.id) {
+                <div [routerLink]="" class="survey">
+                    <div class="survey-content">
+                        <span class="survey-category">{{ item.category }}</span>
+                        <span class="survey-title">{{ item.title }}</span>
+                    </div>
+                    <div class="countdown-container">
+                        <span class="countdown">
+                            Ends in {{ getDaysLeft(item.ends_at) }}
+                            @if (getDaysLeft(item.ends_at) === 1) {
+                            Day
+                            } @else {
+                            Days
+                            }
+                        </span>
+                    </div>
+                </div>
+                } @empty {
+                <p class="no-polls-message">There are currently no active polls.</p>
+                }
                 } @else {
-                    @for (item of getPastPolls(); track item.id) {
-                        <div [routerLink]="" class="">
-                            <div class="">
-                                <span class="">{{ item.category }}</span>
-                                <span class="">{{ item.title }}</span>
-                            </div>
-                            <span class="countdown">Ended</span>
-                        </div>
-                    } @empty {
-                        <p>There are currently no past polls.</p>
-                    }
+                @for (item of getPastPolls(); track item.id) {
+                <div [routerLink]="" class="survey">
+                    <div class="survey-content">
+                        <span class="survey-category">{{ item.category }}</span>
+                        <span class="survey-title">{{ item.title }}</span>
+                    </div>
+                    <div class="countdown-container">
+                        <span class="countdown">Ended</span>
+                    </div>
+                </div>
+                } @empty {
+                <p class="no-polls-message">There are currently no past polls.</p>
+                }
                 }
             </div>
         </div>

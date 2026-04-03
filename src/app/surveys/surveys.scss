@@ -1,14 +1,19 @@
 section {
     background-color: #35273a;
+    display:flex;
+    justify-content: center;
 }
 
 .content {
-    padding: 0 199px;
+    padding: 0 199px 166px 199px;
     display: flex;
     justify-content: center;
     flex-direction: column;
     align-items: center;
     gap: 56px;
+    max-width:1920px;
+    min-width:1920px;
+    box-sizing: border-box;
 
     .ending-soon {
         font-family: 'Mulish';
@@ -17,12 +22,14 @@ section {
         font-weight: 500;
     }
 }
+.ending-surveys-content{
+    width: 100%;
+}
 
 .ending-surveys-polls {
     padding: 34px 0 40px 0;
     display: flex;
     justify-content: space-between;
-    gap: 32px;
 }
 
 .ending-poll {
@@ -36,21 +43,204 @@ section {
     height: 310px;
 
     .category-title-container {
-        display:flex;
+        display: flex;
         flex-direction: column;
         gap: 8px;
+
         .category {
             font-family: 'Mulish';
             font-size: 24px;
             font-weight: 600;
         }
-        .title-poll{
+
+        .title-poll {
             font-family: 'Mulish';
             font-size: 40px;
-            font-weight: 700;       
+            font-weight: 700;
         }
     }
-    .countdown{
+}
+
+.survey-collection-content {
+    width:100%;
+    .filter-options {
+        display: flex;
+        justify-content: space-between;
+        padding-bottom: 40px;
+
+        .survey-filter-buttons {
+            display: flex;
+            gap: 8px;
+
+            button {
+                padding: 2px 10px;
+                font-family: 'Nokora';
+                font-size: 16px;
+                color: #35273A;
+                border-radius: 20px;
+                border: none;
+                background-color: #FEE9D4;
+                transition: background-color 0.2s ease;
+                cursor: pointer;
+
+                &:hover {
+                    background-color: #FFCFA1;
+                }
+
+                &.active-filter {
+                    background-color: #FFB770;
+                }
+            }
+        }
+
+        .category-dropdown {
+            position: relative;
+            display: flex;
+            justify-content: flex-end;
+
+            .category-dropdown-toggle {
+                display: flex;
+                align-items: center;
+                gap: 16px;
+                padding: 0;
+                border: none;
+                background: transparent;
+                color: white;
+                font-family: 'Mulish';
+                font-size: 24px;
+                font-weight: 700;
+                line-height: 1.2;
+                cursor: pointer;
+
+                span {
+                    white-space: nowrap;
+                }
+
+                img {
+                    display: none;
+                    width: 30px;
+                    height: 18px;
+                    object-fit: contain;
+                }
+
+                .arrow-default {
+                    display: block;
+                }
+
+                &:hover .arrow-default {
+                    display: none;
+                }
+
+                &:hover .arrow-hover {
+                    display: block;
+                }
+
+                &.open {
+                    .arrow-default,
+                    .arrow-hover {
+                        display: none;
+                    }
+
+                    .arrow-open {
+                        display: block;
+                    }
+                }
+            }
+
+            .category-dropdown-menu {
+                position: absolute;
+                top: calc(100% + 12px);
+                right: 0;
+                min-width: 240px;
+                padding: 12px;
+                display: flex;
+                flex-direction: column;
+                gap: 6px;
+                background-color: white;
+                border-radius: 20px;
+                box-shadow: 0 12px 24px rgba(0, 0, 0, 0.18);
+                z-index: 5;
+            }
+
+            .category-option {
+                padding: 10px 12px;
+                border: none;
+                border-radius: 12px;
+                background-color: transparent;
+                color: #35273A;
+                font-family: 'Mulish';
+                font-size: 16px;
+                font-weight: 600;
+                text-align: left;
+                cursor: pointer;
+
+                &:hover {
+                    background-color: #F4E9FB;
+                    color: #35273A;
+                }
+
+                &.selected {
+                    background-color: #F4E9FB;
+                    color: #35273A;
+                }
+            }
+        }
+    }
+
+    .survey-collection {
+        display:flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        max-height: 400px;
+        min-height: 400px;
+        overflow-y: auto;
+
+        &::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background-color: #FFB770;
+            border-radius: 10px;
+        }
+
+        .survey {
+            display:flex;
+            flex-direction: column;
+            justify-content: space-between;
+            background-color: #423547;
+            padding: 12px 20px;
+            min-width:calc(50% - 8px);
+            height: 150px;
+            box-sizing: border-box;
+            margin-bottom: 16px;
+
+            .survey-content {
+                display: flex;
+                flex-direction: column;
+
+                .survey-category {
+                    font-family: 'Mulish';
+                    font-size: 16px;
+                    font-weight: 500;
+                    color: #FFCFA1;
+                }
+
+                .survey-title {
+                    font-family: 'Mulish';
+                    font-size: 24px;
+                    font-weight: 700;
+                    color: white;
+                }
+            }
+        }
+    }
+}
+
+.countdown-container {
+    display: flex;
+    justify-content: flex-end;
+    .countdown {
         font-family: 'Mulish';
         font-size: 16px;
         font-weight: 500;
@@ -61,9 +251,11 @@ section {
     }
 }
 
-.survey-collection-content{
-    .filter-options{
-        display:flex;
-        justify-content: space-between;
-    }
+.no-polls-message{
+    color: white;
+        font-size: 24px;
+        font-family: "Mulish";
+        font-weight: 600;
+        padding-top: 24px;
+        padding-bottom: 40px;
 }
