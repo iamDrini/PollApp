@@ -42,6 +42,12 @@ section {
     width: 321px;
     height: 310px;
 
+    &:hover{
+        cursor:pointer;
+        background-color: #F4E9FB;
+        transform: scale(1.05);
+    }
+
     .category-title-container {
         display: flex;
         flex-direction: column;
@@ -214,6 +220,11 @@ section {
             height: 150px;
             box-sizing: border-box;
             margin-bottom: 16px;
+
+            &:hover{
+                cursor:pointer;
+                background-color: #D9D9D929;
+            }
 
             .survey-content {
                 display: flex;

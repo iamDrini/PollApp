@@ -36,6 +36,7 @@ section{
         font-style: bold;
         padding: 12px 16px;
         gap: 0px;
+        width: fit-content;
         transition: 0.3s ease-in-out;
 
         img {
@@ -48,6 +49,7 @@ section{
         &:hover {
             background-color: #ffb770;
             gap: 16px;
+            cursor: pointer;
 
             img {
                 width: 20px;

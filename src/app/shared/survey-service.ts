@@ -10,6 +10,15 @@ export class SurveyService {
   supabase = createClient('https://xixqyrgjdjkoxayonpqr.supabase.co', 'sb_publishable_ho3A-byQYtg4hs_q8jtzCg_4yrPe2cn');
 
   pollList = signal<Poll[]>([]);
+  pollDetail = signal<Poll>({
+    id: 0,
+    created_at: 'n/a',
+    title: 'n/a',
+    subtitle: 'n/a',
+    category: 'n/a',
+    ends_at: 'n/a',
+    questions: []
+  });
 
   constructor(){
     this.getAllPolls();

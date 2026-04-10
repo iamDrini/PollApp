@@ -5,7 +5,7 @@
             <span class="ending-soon">Ending soon surveys</span>
             <div class="ending-surveys-polls">
                 @for(item of getEndingSoonPolls(); track item.id){
-                <div [routerLink]="" class="ending-poll">
+                <div [routerLink]="['poll', item.id]" class="ending-poll">
                     <div class="category-title-container">
                         <span class="category">{{item.category}}</span>
                         <span class="title-poll">{{item.title}}</span>
@@ -66,7 +66,7 @@
             <div class="survey-collection">
                 @if (isActive) {
                 @for (item of getActivePolls(); track item.id) {
-                <div [routerLink]="" class="survey">
+                <div [routerLink]="['poll', item.id]" class="survey">
                     <div class="survey-content">
                         <span class="survey-category">{{ item.category }}</span>
                         <span class="survey-title">{{ item.title }}</span>
@@ -87,7 +87,7 @@
                 }
                 } @else {
                 @for (item of getPastPolls(); track item.id) {
-                <div [routerLink]="" class="survey">
+                <div [routerLink]="['poll', item.id]" class="survey">
                     <div class="survey-content">
                         <span class="survey-category">{{ item.category }}</span>
                         <span class="survey-title">{{ item.title }}</span>
