@@ -1,1 +1,42 @@
-<p>poll works!</p>
+<section>
+    <div class="detail-header">
+        <img src="img/logo-dark.svg" alt="dark Logo">
+        <button>Create survey</button>
+    </div>
+    <div class="detail-container">
+        <div class="poll-section">
+            <span class="status-poll">{{status}}</span>
+            <div class="date-cat-container">
+                @if (endDate) {
+                <span>{{status === 'Published' ? 'Ends on' : 'Expired since'}} {{endDate | date:'dd.MM.yyyy'}}</span>
+                }
+                <span>Category: {{detail().category}}</span>
+            </div>
+            <h3>{{detail().title}}</h3>
+            <span class="subtitle">{{detail().subtitle}}</span>
+            <div class="mult-choice-section">
+                @for(question of detail().questions; track question.id; let idx = $index){
+                <div class="mult-choice-question">
+                    <span>{{idx + 1}}. {{question.question_text}}</span>
+                    @if(question.allow_multiple == true){
+                    <span class="is-multiple">More than one answers are possible.</span>
+                    }
+                    <form>
+                        @for(option of question.options; track option.id; let idx = $index){
+                        <div class="form-option">
+                            <input type="checkbox" [formControl]="optionControls[option.id]">
+                            <label class="option-text">{{option.option_text}}</label>
+                        </div>
+                        }
+                    </form>
+                </div>
+                } @empty {
+                <span>No Data available!</span>
+                }
+            </div>
+        </div>
+        <div class="submit-container">
+            <button>Complete survey</button>
+        </div>
+    </div>
+</section>

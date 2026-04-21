@@ -1,0 +1,82 @@
+section{
+    padding: 39px 112px;
+}
+
+.detail-header{
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    button{
+        font-family: 'Nokora';
+        font-weight: 700;
+        font-size: 18px;
+        color: #221227;
+        padding: 12px 16px;
+        border-radius: 10px;
+        background-color: #FFCFA1;
+    }
+}
+
+.detail-container{
+    padding: 40px;
+    margin-top: 40px;
+    background-color: #8E70991A;
+    border-top-right-radius: 160px;
+}
+
+.poll-section{
+    .status-poll{
+        background-color: #FFB770;
+        padding: 3px 12px 3px 8px;
+        border-top-right-radius: 14px;
+        font-family: 'Mulish';
+        font-weight: 600;
+        font-size: 16px;
+    }
+    .date-cat-container{
+        display:flex;
+        justify-content: space-between;
+        margin-top: 8px;
+        margin-bottom: 16px;
+        font-family: 'Mulish';
+        font-weight: 600;
+        font-size: 16px;
+    }
+    .subtitle{
+        font-family: 'Mulish';
+        font-weight: 400;
+        font-size: 16px;
+    }
+}
+
+.mult-choice-section{
+    display:flex;
+    padding: 40px 0 28px 0;
+    gap:24px;
+    .mult-choice-question{
+        display:flex;
+        flex-direction: column;
+        font-family: 'Mulish';
+        font-weight: 700;
+        font-size: 18px;
+        .option-text{
+            font-weight: 400;
+        }
+        .form-option{
+            display:flex;
+            gap: 20px;
+        }
+    }
+}
+.submit-container{
+    display:flex;
+    justify-content: flex-end;
+    button{
+        font-family: 'Nokora';
+        font-weight: 700;
+        font-size: 16px;
+        padding: 8px 12px;
+        border-radius: 10px;
+        background-color: #FFB7704D;
+    }
+}

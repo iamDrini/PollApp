@@ -27,9 +27,38 @@ export class SurveyService {
   async getAllPolls(){
     let response = await this.supabase
   .from('polls')
-  .select('*')
+  .select(`
+    *,
+    questions (
+      *,
+      options (*)
+    )
+  `)
   this.pollList.set((response.data ?? []) as Poll[]);
   console.log(response);
   
+  }
+
+  setPollDetailById(id:number){
+    let tmpPoll = this.pollList().find(poll => poll.id == id)
+    if(tmpPoll) this.pollDetail.set(tmpPoll);
+  }
+
+  async loadPollById(id: number) {
+    const response = await this.supabase
+      .from('polls')
+      .select(`
+        *,
+        questions (
+          *,
+          options (*)
+        )
+      `)
+      .eq('id', id)
+      .single();
+    
+    if (response.data) {
+      this.pollDetail.set(response.data as Poll);
+    }
   }
 }
