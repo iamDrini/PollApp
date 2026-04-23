@@ -61,4 +61,29 @@ export class SurveyService {
       this.pollDetail.set(response.data as Poll);
     }
   }
+
+  async submitVotes(optionIds: number[]) {
+    // Für jede ausgewählte Option die votes um 1 erhöhen
+    const promises = optionIds.map(optionId => 
+      this.supabase.rpc('increment_votes', { option_id: optionId })
+    );
+    
+    // Alternativ: Falls RPC nicht verfügbar ist, verwende UPDATE
+    const updatePromises = optionIds.map(async optionId => {
+      // Hole aktuelle votes
+      const { data } = await this.supabase
+        .from('options')
+        .select('votes')
+        .eq('id', optionId)
+        .single();
+      
+      // Erhöhe votes um 1
+      return this.supabase
+        .from('options')
+        .update({ votes: (data?.votes ?? 0) + 1 })
+        .eq('id', optionId);
+    });
+    
+    await Promise.all(updatePromises);
+  }
 }
