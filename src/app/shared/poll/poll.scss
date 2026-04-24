@@ -70,6 +70,7 @@ section{
             display:flex;
             align-items: center;
             gap: 12px;
+            margin-top: 12px;
             margin-bottom: 12px;
 
             input[type="checkbox"],
@@ -106,6 +107,10 @@ section{
                 cursor: pointer;
             }
         }
+        .is-multiple{
+            font-weight: 400;
+            font-size: 14px;
+        }
     }
 }
 .submit-container{
@@ -130,8 +135,8 @@ section{
     .results-header{
         margin-bottom: 32px;
         h3{
-            font-family: 'Nokora';
-            font-weight: 700;
+            font-family: 'Nerko One';
+            font-weight: 400;
             font-size: 32px;
             color: #221227;
             .live{

@@ -4,88 +4,90 @@
         <button>Create survey</button>
     </div>
     <div class="content">
-    <div class="detail-container">
-        <div class="poll-section">
-            <span class="status-poll">{{status}}</span>
-            <div class="date-cat-container">
-                @if (endDate) {
-                <span>{{status === 'Published' ? 'Ends on' : 'Expired since'}} {{endDate | date:'dd.MM.yyyy'}}</span>
-                }
-                <span>Category: {{detail().category}}</span>
-            </div>
-            <h3>{{detail().title}}</h3>
-            <span class="subtitle">{{detail().subtitle}}</span>
-            <div class="mult-choice-section">
-                @for(question of detail().questions; track question.id; let idx = $index){
-                <div class="mult-choice-question">
-                    <span>{{idx + 1}}. {{question.question_text}}</span>
-                    @if(question.allow_multiple == true){
-                    <span class="is-multiple">More than one answers are possible.</span>
+        <div class="detail-container">
+            <div class="poll-section">
+                <span class="status-poll">{{status}}</span>
+                <div class="date-cat-container">
+                    @if (endDate) {
+                    <span>{{status === 'Published' ? 'Ends on' : 'Expired since'}} {{endDate |
+                        date:'dd.MM.yyyy'}}</span>
                     }
-                    <form (ngSumbit)="onSubmit()">
-                        @if (question.allow_multiple) {
-                        @for(option of question.options; track option.id; let idx = $index){
-                        <div class="form-option">
-                            <input type="checkbox" [formControl]="optionControls[option.id]"
-                                [id]="'option-' + option.id">
-                            <label class="option-text" [for]="'option-' + option.id"><b>{{getOptionLetter(idx)}}.</b>
-                                {{option.option_text}}</label>
-                        </div>
-                        }
-                        } @else {
-                        @for(option of question.options; track option.id; let idx = $index){
-                        <div class="form-option">
-                            <input type="radio" [formControl]="questionControls[question.id]" [value]="option.id"
-                                [name]="'question-' + question.id" [id]="'option-' + option.id">
-                            <label class="option-text" [for]="'option-' + option.id"><b>{{getOptionLetter(idx)}}.</b>
-                                {{option.option_text}}</label>
-                        </div>
-                        }
-                        }
-                    </form>
+                    <span>Category: {{detail().category}}</span>
                 </div>
-                } @empty {
-                <span>No Data available!</span>
-                }
-            </div>
-            <div class="submit-container">
-                <button (click)="onSubmit()">Complete survey</button>
+                <h3>{{detail().title}}</h3>
+                <span class="subtitle">{{detail().subtitle}}</span>
+                <div class="mult-choice-section">
+                    @for(question of detail().questions; track question.id; let idx = $index){
+                    <div class="mult-choice-question">
+                        <span>{{idx + 1}}. {{question.question_text}}</span>
+                        @if(question.allow_multiple == true){
+                        <span class="is-multiple">More than one answers are possible.</span>
+                        }
+                        <form (ngSumbit)="onSubmit()">
+                            @if (question.allow_multiple) {
+                            @for(option of question.options; track option.id; let idx = $index){
+                            <div class="form-option">
+                                <input type="checkbox" [formControl]="optionControls[option.id]"
+                                    [id]="'option-' + option.id" [disabled]="isExpired">
+                                <label class="option-text"
+                                    [for]="'option-' + option.id"><b>{{getOptionLetter(idx)}}.</b>
+                                    {{option.option_text}}</label>
+                            </div>
+                            }
+                            } @else {
+                            @for(option of question.options; track option.id; let idx = $index){
+                            <div class="form-option">
+                                <input type="radio" [formControl]="questionControls[question.id]" [value]="option.id"
+                                    [name]="'question-' + question.id" [id]="'option-' + option.id" [disabled]="isExpired">
+                                <label class="option-text"
+                                    [for]="'option-' + option.id"><b>{{getOptionLetter(idx)}}.</b>
+                                    {{option.option_text}}</label>
+                            </div>
+                            }
+                            }
+                        </form>
+                    </div>
+                    } @empty {
+                    <span>No Data available!</span>
+                    }
+                </div>
+                <div class="submit-container">
+                    <button (click)="onSubmit()" [disabled]="isExpired">Complete survey</button>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="results-container">
-        @if (hasAnyVotes()) {
+        <div class="results-container">
+            @if (hasAnyVotes()) {
             <div class="results-header">
                 <h3>Survey results <span class="live">LIVE</span></h3>
             </div>
             <div class="results-questions">
                 @for(question of detail().questions; track question.id; let qIdx = $index) {
-                    <div class="result-question">
-                        <h4>{{qIdx + 1}}. {{question.question_text}}</h4>
-                        <div class="result-options">
-                            @for(option of question.options; track option.id; let oIdx = $index) {
-                                <div class="result-option">
-                                    <span class="option-label">{{getOptionLetter(oIdx)}}</span>
-                                    <div class="progress-wrapper">
-                                        <div class="progress">
-                                            <div class="progress-bar" 
-                                                 [style.width.%]="getVotePercentage(option.votes, question)"
-                                                 role="progressbar">
-                                            </div>
-                                        </div>
-                                        <span class="percentage">{{getVotePercentage(option.votes, question)}}%</span>
+                <div class="result-question">
+                    <h4>{{qIdx + 1}}. {{question.question_text}}</h4>
+                    <div class="result-options">
+                        @for(option of question.options; track option.id; let oIdx = $index) {
+                        <div class="result-option">
+                            <span class="option-label">{{getOptionLetter(oIdx)}}</span>
+                            <div class="progress-wrapper">
+                                <div class="progress">
+                                    <div class="progress-bar"
+                                        [style.width.%]="getVotePercentage(option.votes, question)" role="progressbar">
                                     </div>
                                 </div>
-                            }
+                                <span class="percentage">{{getVotePercentage(option.votes, question)}}%</span>
+                            </div>
                         </div>
+                        }
                     </div>
+                </div>
                 }
             </div>
-        } @else {
+            } @else {
             <div class="no-results">
                 <p>Results will be shown here after participants complete the survey.</p>
             </div>
-        }
-    </div>
+            }
+        </div>
     </div>
 </section>

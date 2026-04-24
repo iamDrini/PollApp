@@ -77,6 +77,10 @@ export class Poll {
     return currentDate > endDate ? 'Expired' : 'Published';
   }
 
+  get isExpired(): boolean {
+    return this.status === 'Expired';
+  }
+
   getOptionLetter(index: number): string {
     return String.fromCharCode(65 + index); 
   }
