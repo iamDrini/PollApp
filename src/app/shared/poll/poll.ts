@@ -20,6 +20,7 @@ export class Poll {
   detail = this.pollService.pollDetail;
   optionControls: Record<number, FormControl> = {};  // Für Checkboxen (multiple choice)
   questionControls: Record<number, FormControl> = {}; // Für Radio Buttons (single choice)
+  showNoOptionsError = false;
 
   constructor() {
     // Effect reagiert auf Änderungen am detail Signal
@@ -81,6 +82,10 @@ export class Poll {
     return this.status === 'Expired';
   }
 
+  get hasQuestions(): boolean {
+    return this.detail().questions && this.detail().questions.length > 0;
+  }
+
   getOptionLetter(index: number): string {
     return String.fromCharCode(65 + index); 
   }
@@ -129,14 +134,16 @@ export class Poll {
     
     // Validierung: Mindestens eine Option muss ausgewählt sein
     if (selectedOptionIds.length === 0) {
-      alert('Please select at least one option');
+      this.showNoOptionsError = true;
       return;
     }
+    
+    // Fehlermeldung ausblenden, wenn fortgefahren wird
+    this.showNoOptionsError = false;
     
     // Stimmen submitten
     try {
       await this.pollService.submitVotes(selectedOptionIds);
-      alert('Your vote has been submitted successfully!');
       // Reload poll data to show updated votes
       await this.pollService.loadPollById(this.detail().id);
     } catch (error) {

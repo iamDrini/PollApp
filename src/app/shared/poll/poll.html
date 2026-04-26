@@ -52,7 +52,10 @@
                     }
                 </div>
                 <div class="submit-container">
-                    <button (click)="onSubmit()" [disabled]="isExpired">Complete survey</button>
+                    <span class="no-options-selected" [style.display]="showNoOptionsError ? 'block' : 'none'">Please select atleast one option!</span>
+                    <span class="expired-survey" [style.display]="isExpired ? 'block' : 'none'">This Survey is expired!</span>
+                    <span></span>
+                    <button (click)="onSubmit()" [disabled]="isExpired || !hasQuestions">Complete survey</button>
                 </div>
             </div>
         </div>

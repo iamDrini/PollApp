@@ -115,7 +115,8 @@ section{
 }
 .submit-container{
     display:flex;
-    justify-content: flex-end;
+    align-items: center;
+    justify-content: space-between;
     button{
         font-family: 'Nokora';
         font-weight: 700;
@@ -123,6 +124,20 @@ section{
         padding: 8px 12px;
         border-radius: 10px;
         background-color: #FFB7704D;
+    }
+    .no-options-selected{
+        font-family: 'Nokora';
+        font-weight: 700;
+        font-size: 16px;
+        color: red;
+        display:none;
+    }
+    .expired-survey{
+        font-family: 'Nokora';
+        font-weight: 700;
+        font-size: 16px;
+        color:red;
+        display:none;
     }
 }
 
