@@ -1,5 +1,5 @@
 import { Component, inject, effect } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { SurveyService } from '../survey-service';
 import { CommonModule } from '@angular/common';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
@@ -7,7 +7,7 @@ import { Question } from '../interfaces/interface';
 
 @Component({
   selector: 'app-poll',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink],
   templateUrl: './poll.html',
   styleUrl: './poll.scss',
 })
