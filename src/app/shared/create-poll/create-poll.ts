@@ -1,7 +1,8 @@
-import { Component, inject, ElementRef } from '@angular/core';
-import { FormBuilder, FormArray, ReactiveFormsModule } from '@angular/forms';
+import { Component, inject, ElementRef, ChangeDetectorRef } from '@angular/core';
+import { FormBuilder, FormArray, ReactiveFormsModule, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { SurveyService } from '../survey-service';
 
 @Component({
   selector: 'app-create-poll',
@@ -15,8 +16,12 @@ import { RouterLink } from '@angular/router';
 export class CreatePoll {
   fb = inject(FormBuilder);
   private readonly elementRef = inject(ElementRef<HTMLElement>);
+  private readonly surveyService = inject(SurveyService);
+  private readonly router = inject(Router);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   isCategoryDropdownOpen = false;
+  showSuccessOverlay = false;
   selectedCategory = 'Choose category';
   categories = [
     'Team Activities',
@@ -28,11 +33,11 @@ export class CreatePoll {
   ];
 
   pollForm = this.fb.group({
-    surveyName: [''],
+    surveyName: ['', Validators.required],
     describingText: [''],
-    endDate: [''],
+    endDate: ['', Validators.required],
     category: [''],
-    questions: this.fb.array([])
+    questions: this.fb.array([], Validators.required)
   });
 
   ngOnInit() {
@@ -68,17 +73,25 @@ export class CreatePoll {
 
   createQuestion() {
     return this.fb.group({
-      questionText: [''],
+      questionText: ['', Validators.required],
       allowMultiple: [false],
       answers: this.fb.array([
         this.createAnswer(),
         this.createAnswer()
-      ])
+      ], [Validators.minLength(2), this.minFilledAnswersValidator(2)])
     });
   }
 
   createAnswer() {
-    return this.fb.control('');
+    return this.fb.control('', Validators.required);
+  }
+
+  minFilledAnswersValidator(minCount: number) {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const formArray = control as FormArray;
+      const filledAnswers = formArray.controls.filter(ctrl => ctrl.value && ctrl.value.trim() !== '');
+      return filledAnswers.length >= minCount ? null : { minFilledAnswers: { required: minCount, actual: filledAnswers.length } };
+    };
   }
 
   addQuestion() {
@@ -86,11 +99,9 @@ export class CreatePoll {
   }
 
   removeQuestion(index: number) {
-    if (index === 0) {
-      // Erste Question: nur Inhalt löschen
+    if (this.questions.length === 1) {
       this.clearQuestion(index);
     } else {
-      // Weitere Questions: komplett entfernen
       this.questions.removeAt(index);
     }
   }
@@ -102,19 +113,29 @@ export class CreatePoll {
       allowMultiple: false
     });
     const answers = this.getAnswers(index);
-    answers.clear();
-    answers.push(this.createAnswer());
-    answers.push(this.createAnswer());
+    const answerCount = answers.length;
+    for (let i = 0; i < answerCount; i++) {
+      answers.at(i).setValue('');
+    }
+    while (answers.length > 2) {
+      answers.removeAt(answers.length - 1);
+    }
+    while (answers.length < 2) {
+      answers.push(this.createAnswer());
+    }
   }
 
   addAnswer(questionIndex: number) {
-    this.getAnswers(questionIndex).push(this.createAnswer());
+    const answers = this.getAnswers(questionIndex);
+    answers.push(this.createAnswer());
+    answers.updateValueAndValidity();
   }
 
   removeAnswer(questionIndex: number, answerIndex: number) {
     const answers = this.getAnswers(questionIndex);
     if (answers.length > 2) {
       answers.removeAt(answerIndex);
+      answers.updateValueAndValidity();
     }
   }
 
@@ -126,7 +147,35 @@ export class CreatePoll {
     this.pollForm.get(fieldName)?.setValue('');
   }
 
-  onSubmit() {
-    console.log(this.pollForm.value);
+  async onSubmit() {
+    if (this.pollForm.valid) {
+      const formValue = this.pollForm.value;
+      const pollData = {
+        title: formValue.surveyName || '',
+        subtitle: formValue.describingText || '',
+        category: formValue.category || this.selectedCategory,
+        ends_at: formValue.endDate || '',
+        questions: (formValue.questions || []).map((q: any) => ({
+          question_text: q.questionText,
+          allow_multiple: q.allowMultiple,
+          answers: q.answers || []
+        }))
+      };
+      const result = await this.surveyService.addPoll(pollData);
+      
+      if (result.success) {
+        console.log('Poll successfully created with ID:', result.pollId);
+        this.showSuccessOverlay = true;
+        this.cdr.detectChanges();
+        
+        setTimeout(() => {
+          this.router.navigate(['/']);
+        }, 2000);
+      } else {
+        console.error('Failed to create poll:', result.error);
+      }
+    } else {
+      this.pollForm.markAllAsTouched();
+    }
   }
 }

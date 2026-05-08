@@ -63,21 +63,15 @@ export class SurveyService {
   }
 
   async submitVotes(optionIds: number[]) {
-    // Für jede ausgewählte Option die votes um 1 erhöhen
     const promises = optionIds.map(optionId => 
       this.supabase.rpc('increment_votes', { option_id: optionId })
     );
-    
-    // Alternativ: Falls RPC nicht verfügbar ist, verwende UPDATE
     const updatePromises = optionIds.map(async optionId => {
-      // Hole aktuelle votes
       const { data } = await this.supabase
         .from('options')
         .select('votes')
         .eq('id', optionId)
         .single();
-      
-      // Erhöhe votes um 1
       return this.supabase
         .from('options')
         .update({ votes: (data?.votes ?? 0) + 1 })
@@ -85,5 +79,72 @@ export class SurveyService {
     });
     
     await Promise.all(updatePromises);
+  }
+
+  async addPoll(pollData: { 
+    title: string; 
+    subtitle: string; 
+    category: string; 
+    ends_at: string; 
+    questions: { 
+      question_text: string; 
+      allow_multiple: boolean; 
+      answers: string[] 
+    }[] 
+  }) {
+    try {
+      const { data: poll, error: pollError } = await this.supabase
+        .from('polls')
+        .insert({
+          title: pollData.title,
+          subtitle: pollData.subtitle,
+          category: pollData.category,
+          ends_at: pollData.ends_at
+        })
+        .select()
+        .single();
+
+      if (pollError || !poll) {
+        console.error('Error inserting poll:', pollError);
+        return { success: false, error: pollError };
+      }
+      const { data: questions, error: questionsError } = await this.supabase
+        .from('questions')
+        .insert(
+          pollData.questions.map(q => ({
+            poll_id: poll.id,
+            question_text: q.question_text,
+            allow_multiple: q.allow_multiple
+          }))
+        )
+        .select();
+
+      if (questionsError || !questions) {
+        console.error('Error inserting questions:', questionsError);
+        return { success: false, error: questionsError };
+      }
+      for (let i = 0; i < questions.length; i++) {
+        const { error: optionsError } = await this.supabase
+          .from('options')
+          .insert(
+            pollData.questions[i].answers.map(answer => ({
+              question_id: questions[i].id,
+              option_text: answer,
+              votes: 0
+            }))
+          );
+
+        if (optionsError) {
+          console.error('Error inserting options:', optionsError);
+          return { success: false, error: optionsError };
+        }
+      }
+      await this.getAllPolls();
+
+      return { success: true, pollId: poll.id };
+    } catch (error) {
+      console.error('Unexpected error in addPoll:', error);
+      return { success: false, error };
+    }
   }
 }

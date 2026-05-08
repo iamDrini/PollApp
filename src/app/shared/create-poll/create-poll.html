@@ -8,23 +8,31 @@
             <div class="poll-topic-container">
                 <div class="name-date-container">
                     <div class="form-group">
-                        <label>Survey name</label>
+                        <label>Survey name <span class="required">*</span></label>
                         <div class="input-container">
-                            <input type="text" formControlName="surveyName">
+                            <input type="text" formControlName="surveyName"
+                                [class.invalid]="pollForm.get('surveyName')?.invalid && pollForm.get('surveyName')?.touched">
                             <button type="button" class="clear-btn" (click)="clearField('surveyName')">
                                 <img src="img/trash.svg" alt="clear">
                             </button>
                         </div>
+                        <div class="error-message"
+                            [class.visible]="pollForm.get('surveyName')?.invalid && pollForm.get('surveyName')?.touched">
+                            Survey name is required</div>
                     </div>
                     <div class="date-category-container">
                         <div>
-                            <label>Set end date <span class="optional">(optional)</span></label>
+                            <label>Set end date <span class="required">*</span></label>
                             <div class="input-container">
-                                <input type="date" formControlName="endDate">
+                                <input type="date" formControlName="endDate"
+                                    [class.invalid]="pollForm.get('endDate')?.invalid && pollForm.get('endDate')?.touched">
                                 <button type="button" class="clear-btn" (click)="clearField('endDate')">
                                     <img src="img/trash.svg" alt="clear">
                                 </button>
                             </div>
+                            <div class="error-message"
+                                [class.visible]="pollForm.get('endDate')?.invalid && pollForm.get('endDate')?.touched">
+                                End date is required</div>
                         </div>
 
                         <div class="category-dropdown">
@@ -64,14 +72,18 @@
                 @for(question of questions.controls; track $index; let i = $index) {
                 <div class="question-container" [formGroupName]="i">
                     <div class="question-header">
-                        <span>{{i + 1}}. Question</span>
+                        <span>{{i + 1}}. Question <span class="required">*</span></span>
                         <button type="button" class="clear-btn" (click)="removeQuestion(i)">
                             <img src="img/trash.svg" alt="delete">
                         </button>
                     </div>
 
                     <input type="text" class="question-input" formControlName="questionText"
-                        placeholder="Enter your question">
+                        placeholder="Enter your question"
+                        [class.invalid]="question.get('questionText')?.invalid && question.get('questionText')?.touched">
+                    <div class="error-message"
+                        [class.visible]="question.get('questionText')?.invalid && question.get('questionText')?.touched">
+                        Question text is required</div>
 
                     <div class="answers-section">
                         <div class="answers-header">
@@ -86,7 +98,8 @@
                             @for(answer of getAnswers(i).controls; track $index; let j = $index) {
                             <div class="answer-row">
                                 <span class="answer-label">{{getAnswerLetter(j)}}.</span>
-                                <input type="text" [formControlName]="j" placeholder="Enter answer option">
+                                <input type="text" [formControlName]="j" placeholder="Enter answer option"
+                                    [class.invalid]="getAnswers(i).at(j).invalid && getAnswers(i).at(j).touched">
                                 <button type="button" class="clear-btn small" (click)="removeAnswer(i, j)"
                                     [disabled]="getAnswers(i).length <= 2">
                                     <img src="img/trash.svg" alt="delete">
@@ -94,6 +107,8 @@
                             </div>
                             }
                         </div>
+                        <div class="error-message" [class.visible]="getAnswers(i).invalid && getAnswers(i).touched">At
+                            least 2 filled answers are required</div>
                         <button type="button" class="add-btn" (click)="addAnswer(i)">
                             <span>Add answer</span>
                             <img src="img/plus.svg" alt="add">
@@ -111,6 +126,11 @@
             <div class="btn-container">
                 <button type="submit">Publish <img src="img/check.png"></button>
             </div>
+            @if (showSuccessOverlay) {
+            <div class="overlay-success">
+                <span>Your survey is now<br> published</span>
+            </div>
+            }
         </form>
     </div>
 </section>

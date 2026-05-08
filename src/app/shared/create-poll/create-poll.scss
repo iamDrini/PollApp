@@ -5,6 +5,9 @@ section {
     max-width: 1620px;
     margin: 0 auto;
 }
+form{
+    position: relative;
+}
 
 .header {
     display: flex;
@@ -339,6 +342,7 @@ section {
         &:hover{
             gap: 16px;
             cursor: pointer;
+            background-color: #FFB770;
             
             img{
                 width: 20px;
@@ -346,4 +350,66 @@ section {
             }
         }
     }
+}
+
+.overlay-success{
+    position: absolute;
+    z-index: 100;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fee9d4;
+    width: fit-content;
+    padding: 14px 25px 14px 25px;
+    color: #35273A;
+    font-family: 'Nerko One';
+    font-size: 24px;
+    font-weight: 400;
+    border-top-right-radius: 25px;
+    border-bottom-left-radius: 25px;
+    gap: 38px;
+    animation: slideInFromRight 0.5s ease-out;
+    cursor: pointer;
+
+    div {
+        display: flex;
+        align-items: center;
+    }
+}
+
+@keyframes slideInFromRight {
+    from {
+        transform: translateX(calc(100% + 50px));
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.required {
+    color: #FFB770;
+}
+
+.error-message {
+    color: #ff6b6b;
+    font-family: 'Mulish';
+    font-size: 14px;
+    font-weight: 600;
+    margin-top: 4px;
+    opacity: 0;
+    height: 20px;
+    transition: opacity 0.3s ease-in-out;
+    
+    &.visible {
+        opacity: 1;
+    }
+}
+
+input.invalid,
+textarea.invalid {
+    border: 2px solid #ff6b6b;
 }

@@ -18,12 +18,11 @@ export class Poll {
   pollService = inject(SurveyService);
 
   detail = this.pollService.pollDetail;
-  optionControls: Record<number, FormControl> = {};  // Für Checkboxen (multiple choice)
-  questionControls: Record<number, FormControl> = {}; // Für Radio Buttons (single choice)
+  optionControls: Record<number, FormControl> = {};
+  questionControls: Record<number, FormControl> = {};
   showNoOptionsError = false;
 
   constructor() {
-    // Effect reagiert auf Änderungen am detail Signal
     effect(() => {
       const poll = this.detail();
       if (poll.id > 0 && poll.questions.length > 0) {
@@ -49,12 +48,10 @@ export class Poll {
     
     this.detail().questions.forEach(question => {
       if (question.allow_multiple) {
-        // Multiple Choice: Ein FormControl pro Option (Checkbox)
         question.options.forEach(option => {
           this.optionControls[option.id] = new FormControl(false);
         });
       } else {
-        // Single Choice: Ein FormControl pro Question (Radio)
         this.questionControls[question.id] = new FormControl(null);
       }
     });
@@ -89,15 +86,11 @@ export class Poll {
   getOptionLetter(index: number): string {
     return String.fromCharCode(65 + index); 
   }
-
-  // Prüft ob es irgendwelche Votes gibt
   hasAnyVotes(): boolean {
     return this.detail().questions.some(q => 
       q.options.some(opt => opt.votes > 0)
     );
   }
-
-  // Berechne Gesamtzahl der Votes für eine Frage
   getTotalVotes(question: Question): number {
     let total = 0;
     for (let option of question.options) {
@@ -105,8 +98,6 @@ export class Poll {
     }
     return total;
   }
-
-  // Berechne Prozentsatz für eine Option
   getVotePercentage(optionVotes: number, question: Question): number {
     const total = this.getTotalVotes(question);
     if (total === 0) return 0;
@@ -115,36 +106,25 @@ export class Poll {
 
   async onSubmit() {
     const selectedOptionIds: number[] = [];
-    
-    // Sammle ausgewählte Optionen aus Checkboxen (multiple choice)
     Object.keys(this.optionControls).forEach(optionId => {
       const control = this.optionControls[Number(optionId)];
       if (control.value === true) {
         selectedOptionIds.push(Number(optionId));
       }
     });
-    
-    // Sammle ausgewählte Optionen aus Radio Buttons (single choice)
     Object.keys(this.questionControls).forEach(questionId => {
       const control = this.questionControls[Number(questionId)];
       if (control.value !== null) {
         selectedOptionIds.push(Number(control.value));
       }
     });
-    
-    // Validierung: Mindestens eine Option muss ausgewählt sein
     if (selectedOptionIds.length === 0) {
       this.showNoOptionsError = true;
       return;
     }
-    
-    // Fehlermeldung ausblenden, wenn fortgefahren wird
     this.showNoOptionsError = false;
-    
-    // Stimmen submitten
     try {
       await this.pollService.submitVotes(selectedOptionIds);
-      // Reload poll data to show updated votes
       await this.pollService.loadPollById(this.detail().id);
     } catch (error) {
       console.error('Error submitting votes:', error);
