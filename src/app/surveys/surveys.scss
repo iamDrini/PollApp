@@ -31,6 +31,7 @@ section {
     padding: 34px 0 40px 0;
     display: flex;
     justify-content: space-between;
+    gap:16px;
 }
 
 .ending-poll {
@@ -295,7 +296,7 @@ section {
     }
 }
 
-@media(max-width: 1250px) {
+@media(max-width: 1100px) {
     .ending-surveys-polls {
         gap: 16px;
         overflow-x: scroll;
