@@ -24,6 +24,19 @@ h2{
   line-height: 89px;
 }
 
+@media(max-width: 760px){
+  h2{
+    font-size: 62px;
+    line-height:62px;
+  }
+  h3{
+    font-size: 48px;
+  }
+  h4{
+    font-size: 54px;
+  }
+}
+
 h3{
   font-family: 'Nerko One';
   font-weight: 400;
