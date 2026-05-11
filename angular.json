@@ -35,7 +35,7 @@
           },
           "configurations": {
             "production": {
-              "baseHref": "pollapp",
+              "baseHref": "/pollapp/",
               "budgets": [
                 {
                   "type": "initial",
