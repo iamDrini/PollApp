@@ -35,14 +35,11 @@
                         survey</button>
                 </div>
                 <div class="category-dropdown">
-                    <button
-                        type="button"
-                        class="category-dropdown-toggle"
-                        [class.open]="isCategoryDropdownOpen"
-                        [attr.aria-expanded]="isCategoryDropdownOpen"
-                        aria-haspopup="menu"
+                    <button type="button" class="category-dropdown-toggle" [class.open]="isCategoryDropdownOpen"
+                        [attr.aria-expanded]="isCategoryDropdownOpen" aria-haspopup="menu"
                         (click)="toggleCategoryDropdown()">
-                        <span>{{ selectedCategory === 'All categories' ? 'Sort by categories' : selectedCategory }}</span>
+                        <span>{{ selectedCategory === 'All categories' ? 'Sort by categories' : selectedCategory
+                            }}</span>
                         <img class="arrow-default" src="img/arrow_down_white.png" alt="" aria-hidden="true">
                         <img class="arrow-hover" src="img/arrow_down_orange.png" alt="" aria-hidden="true">
                         <img class="arrow-open" src="img/arrow_up_orange.png" alt="" aria-hidden="true">
@@ -51,10 +48,7 @@
                     @if (isCategoryDropdownOpen) {
                     <div class="category-dropdown-menu" role="menu">
                         @for (category of getCategories(); track category) {
-                        <button
-                            type="button"
-                            class="category-option"
-                            [class.selected]="selectedCategory === category"
+                        <button type="button" class="category-option" [class.selected]="selectedCategory === category"
                             (click)="setCategory(category)">
                             {{ category }}
                         </button>

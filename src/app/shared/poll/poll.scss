@@ -1,18 +1,19 @@
-section{
+section {
     padding: 39px 112px;
     max-width: 1920px;
     margin: 0 auto;
 }
 
-.content{
-    display:flex;
+.content {
+    display: flex;
 }
 
-.detail-header{
-    display:flex;
+.detail-header {
+    display: flex;
     justify-content: space-between;
     align-items: center;
-    a{
+
+    a {
         font-family: 'Nokora';
         font-weight: 700;
         font-size: 18px;
@@ -23,7 +24,7 @@ section{
     }
 }
 
-.detail-container{
+.detail-container {
     border-top-right-radius: 100px;
     padding: 40px;
     margin-top: 40px;
@@ -31,14 +32,15 @@ section{
     border-top-right-radius: 160px;
 }
 
-.poll-section{
-    .status-close-container{
+.poll-section {
+    .status-close-container {
         display: flex;
         justify-content: space-between;
         align-items: center;
         padding-right: 24px;
         padding-top: 24px;
-        .status-poll{
+
+        .status-poll {
             background-color: #FFB770;
             padding: 3px 12px 3px 8px;
             border-top-right-radius: 14px;
@@ -47,7 +49,7 @@ section{
             font-size: 16px;
         }
 
-        .close-button{
+        .close-button {
             display: flex;
             align-items: center;
             justify-content: center;
@@ -57,19 +59,19 @@ section{
             cursor: pointer;
             transition: background-color 0.2s ease;
 
-            &:hover{
+            &:hover {
                 background-color: #FFB770;
             }
 
-            img{
+            img {
                 width: 16px;
                 height: 16px;
             }
         }
     }
 
-    .date-cat-container{
-        display:flex;
+    .date-cat-container {
+        display: flex;
         justify-content: space-between;
         margin-top: 8px;
         margin-bottom: 16px;
@@ -77,35 +79,39 @@ section{
         font-weight: 600;
         font-size: 16px;
     }
-    .subtitle{
+
+    .subtitle {
         font-family: 'Mulish';
         font-weight: 400;
         font-size: 16px;
     }
 }
 
-.mult-choice-section{
-    display:flex;
+.mult-choice-section {
+    display: flex;
     padding: 40px 0 28px 0;
-    gap:24px;
-    .mult-choice-question{
-        display:flex;
+    gap: 24px;
+
+    .mult-choice-question {
+        display: flex;
         flex-direction: column;
         font-family: 'Mulish';
         font-weight: 700;
         font-size: 18px;
-        .option-text{
+
+        .option-text {
             font-weight: 400;
         }
-        .form-option{
-            display:flex;
+
+        .form-option {
+            display: flex;
             align-items: center;
             gap: 12px;
             margin-top: 12px;
             margin-bottom: 12px;
 
             input[type="checkbox"],
-            input[type="radio"]{
+            input[type="radio"] {
                 appearance: none;
                 width: 24px;
                 height: 24px;
@@ -116,12 +122,12 @@ section{
                 flex-shrink: 0;
                 background-color: white;
 
-                &:checked{
+                &:checked {
                     background-color: #FFB770;
                     border-color: #FFB770;
                 }
 
-                &:checked::after{
+                &:checked::after {
                     content: '✓';
                     position: absolute;
                     top: 50%;
@@ -134,74 +140,82 @@ section{
                 }
             }
 
-            .option-text{
+            .option-text {
                 cursor: pointer;
             }
         }
-        .is-multiple{
+
+        .is-multiple {
             font-weight: 400;
             font-size: 14px;
         }
     }
 }
-.submit-container{
-    display:flex;
+
+.submit-container {
+    display: flex;
     align-items: center;
     justify-content: space-between;
-    button{
+
+    button {
         font-family: 'Nokora';
         font-weight: 700;
         font-size: 16px;
         padding: 8px 12px;
         border-radius: 10px;
         background-color: #FFB7704D;
-        &:hover{
+
+        &:hover {
             background-color: #FFB770;
         }
     }
-    .no-options-selected{
+
+    .no-options-selected {
         font-family: 'Nokora';
         font-weight: 700;
         font-size: 16px;
         color: red;
-        display:none;
+        display: none;
     }
-    .expired-survey{
+
+    .expired-survey {
         font-family: 'Nokora';
         font-weight: 700;
         font-size: 16px;
-        color:red;
-        display:none;
+        color: red;
+        display: none;
     }
 }
 
-.results-container{
+.results-container {
     padding: 40px;
     margin-top: 40px;
     background-color: #FFFFFF;
     border-radius: 20px;
-    
-    .results-header{
+
+    .results-header {
         margin-bottom: 32px;
-        h3{
+
+        h3 {
             font-family: 'Nerko One';
             font-weight: 400;
             font-size: 32px;
             color: #221227;
-            .live{
+
+            .live {
                 color: #FFB770;
             }
         }
     }
 
-    .results-questions{
+    .results-questions {
         display: flex;
         flex-direction: column;
         gap: 32px;
     }
 
-    .result-question{
-        span{
+    .result-question {
+        span {
             font-family: 'Mulish';
             font-weight: 700;
             font-size: 18px;
@@ -209,18 +223,18 @@ section{
             margin-bottom: 16px;
         }
 
-        .result-options{
+        .result-options {
             display: flex;
             flex-direction: column;
             gap: 12px;
         }
 
-        .result-option{
+        .result-option {
             display: flex;
             align-items: center;
             gap: 12px;
 
-            .option-label{
+            .option-label {
                 font-family: 'Mulish';
                 font-weight: 700;
                 font-size: 16px;
@@ -228,27 +242,27 @@ section{
                 min-width: 20px;
             }
 
-            .progress-wrapper{
+            .progress-wrapper {
                 flex: 1;
                 display: flex;
                 align-items: center;
                 gap: 12px;
 
-                .progress{
+                .progress {
                     flex: 1;
                     height: 24px;
                     background-color: #E5E5E5;
                     border-radius: 4px;
                     overflow: hidden;
 
-                    .progress-bar{
+                    .progress-bar {
                         background-color: #FFB770;
                         height: 100%;
                         transition: width 0.3s ease;
                     }
                 }
 
-                .percentage{
+                .percentage {
                     font-family: 'Mulish';
                     font-weight: 600;
                     font-size: 14px;
@@ -260,10 +274,11 @@ section{
         }
     }
 
-    .no-results{
+    .no-results {
         text-align: center;
         padding: 40px;
-        p{
+
+        p {
             font-family: 'Mulish';
             font-size: 16px;
             color: #666;
@@ -271,45 +286,51 @@ section{
     }
 }
 
-@media(max-width: 1220px){
-    .content{
+@media(max-width: 1220px) {
+    .content {
         flex-direction: column;
     }
 }
 
-@media(max-width: 750px){
-    section{
+@media(max-width: 750px) {
+    section {
         padding: 39px 16px;
     }
 }
 
-@media(max-width: 650px){
-    .mult-choice-section{
+@media(max-width: 650px) {
+    .mult-choice-section {
         flex-direction: column;
     }
-    .detail-container{
+
+    .detail-container {
         border-top-right-radius: 100px;
     }
 }
-@media(max-width: 500px){
-    .date-cat-container{
+
+@media(max-width: 500px) {
+    .date-cat-container {
         flex-direction: column;
         gap: 8px;
     }
-    .submit-container{
+
+    .submit-container {
         flex-direction: column;
         gap: 8px;
     }
 }
-@media(max-width: 400px){
-    .option-text{
+
+@media(max-width: 400px) {
+    .option-text {
         font-size: 16px;
     }
-    .detail-container{
+
+    .detail-container {
         border-top-right-radius: 100px;
         padding: 20px 16px;
     }
-    .results-container{
+
+    .results-container {
         padding: 20px 16px;
     }
 }

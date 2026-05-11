@@ -4,6 +4,10 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { SurveyService } from '../survey-service';
 
+/**
+ * Component for creating new polls/surveys
+ * Handles form validation, dynamic question/answer management, and poll submission
+ */
 @Component({
   selector: 'app-create-poll',
   imports: [CommonModule, ReactiveFormsModule, RouterLink],
@@ -19,10 +23,11 @@ export class CreatePoll {
   private readonly surveyService = inject(SurveyService);
   private readonly router = inject(Router);
   private readonly cdr = inject(ChangeDetectorRef);
-
   isCategoryDropdownOpen = false;
   showSuccessOverlay = false;
   selectedCategory = 'Choose category';
+  
+  /** Available poll categories for selection */
   categories = [
     'Team Activities',
     'Health & Wellness',
@@ -71,6 +76,11 @@ export class CreatePoll {
     return this.questions.at(questionIndex).get('answers') as FormArray;
   }
 
+  /**
+   * Creates a new question form group with default values
+   * Each question starts with 2 empty answer fields
+   * @returns FormGroup containing question fields and answer array
+   */
   createQuestion() {
     return this.fb.group({
       questionText: ['', Validators.required],
@@ -86,6 +96,10 @@ export class CreatePoll {
     return this.fb.control('', Validators.required);
   }
 
+  /**
+   * Custom validator ensuring minimum number of filled answer options
+   * Checks for non-empty, trimmed values
+   */
   minFilledAnswersValidator(minCount: number) {
     return (control: AbstractControl): ValidationErrors | null => {
       const formArray = control as FormArray;
@@ -98,6 +112,10 @@ export class CreatePoll {
     this.questions.push(this.createQuestion());
   }
 
+  /**
+   * Removes a question from the form
+   * If it's the last question, clears it instead of removing to maintain at least one question
+   */
   removeQuestion(index: number) {
     if (this.questions.length === 1) {
       this.clearQuestion(index);
@@ -106,6 +124,10 @@ export class CreatePoll {
     }
   }
 
+  /**
+   * Resets a question to its default state
+   * Clears all fields and ensures exactly 2 answer options remain
+   */
   clearQuestion(index: number) {
     const question = this.questions.at(index);
     question.patchValue({
@@ -125,6 +147,10 @@ export class CreatePoll {
     }
   }
 
+  /**
+   * Adds a new answer option to a specific question
+   * Triggers validation after adding
+   */
   addAnswer(questionIndex: number) {
     const answers = this.getAnswers(questionIndex);
     answers.push(this.createAnswer());
@@ -143,39 +169,64 @@ export class CreatePoll {
     return String.fromCharCode(65 + index);
   }
 
+  /** Clears the value of a specific form field */
   clearField(fieldName: string): void {
     this.pollForm.get(fieldName)?.setValue('');
   }
 
+  /**
+   * Handles form submission
+   * Validates form, transforms data, submits to service, and handles success/error
+   */
   async onSubmit() {
     if (this.pollForm.valid) {
-      const formValue = this.pollForm.value;
-      const pollData = {
-        title: formValue.surveyName || '',
-        subtitle: formValue.describingText || '',
-        category: formValue.category || this.selectedCategory,
-        ends_at: formValue.endDate || '',
-        questions: (formValue.questions || []).map((q: any) => ({
-          question_text: q.questionText,
-          allow_multiple: q.allowMultiple,
-          answers: q.answers || []
-        }))
-      };
+      const pollData = this.transformFormToPollData();
       const result = await this.surveyService.addPoll(pollData);
-      
+
       if (result.success) {
-        console.log('Poll successfully created with ID:', result.pollId);
-        this.showSuccessOverlay = true;
-        this.cdr.detectChanges();
-        
-        setTimeout(() => {
-          this.router.navigate(['/']);
-        }, 2000);
+        this.handleSuccessfulSubmission(result.pollId);
       } else {
-        console.error('Failed to create poll:', result.error);
+        this.handleSubmissionError(result.error);
       }
     } else {
       this.pollForm.markAllAsTouched();
     }
+  }
+
+  /**
+   * Transforms reactive form data into the poll data structure required by the API
+   * Maps form field names to database field names
+   */
+  private transformFormToPollData() {
+    const formValue = this.pollForm.value;
+    return {
+      title: formValue.surveyName || '',
+      subtitle: formValue.describingText || '',
+      category: formValue.category || this.selectedCategory,
+      ends_at: formValue.endDate || '',
+      questions: (formValue.questions || []).map((q: any) => ({
+        question_text: q.questionText,
+        allow_multiple: q.allowMultiple,
+        answers: q.answers || []
+      }))
+    };
+  }
+
+  /**
+   * Handles successful poll creation
+   * Shows success overlay for 2 seconds then navigates to home page
+   */
+  private handleSuccessfulSubmission(pollId: number): void {
+    this.showSuccessOverlay = true;
+    this.cdr.detectChanges();
+
+    setTimeout(() => {
+      this.router.navigate(['/']);
+    }, 2000);
+  }
+
+  /** Logs poll creation error to console */
+  private handleSubmissionError(error: any): void {
+    console.error('Failed to create poll:', error);
   }
 }

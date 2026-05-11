@@ -1,0 +1,16 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "entryPoints": ["./src/app"],
+  "entryPointStrategy": "expand",
+  "out": "docs",
+  "exclude": [
+    "**/*.spec.ts",
+    "**/node_modules/**"
+  ],
+  "name": "PollApp Documentation",
+  "includeVersion": true,
+  "readme": "README.md",
+  "navigationLinks": {
+    "GitHub": "https://github.com/yourusername/pollapp"
+  }
+}

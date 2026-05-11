@@ -43,7 +43,8 @@
                             @for(option of question.options; track option.id; let idx = $index){
                             <div class="form-option">
                                 <input type="radio" [formControl]="questionControls[question.id]" [value]="option.id"
-                                    [name]="'question-' + question.id" [id]="'option-' + option.id" [disabled]="isExpired">
+                                    [name]="'question-' + question.id" [id]="'option-' + option.id"
+                                    [disabled]="isExpired">
                                 <label class="option-text"
                                     [for]="'option-' + option.id"><b>{{getOptionLetter(idx)}}.</b>
                                     {{option.option_text}}</label>
@@ -57,8 +58,10 @@
                     }
                 </div>
                 <div class="submit-container">
-                    <span class="no-options-selected" [style.display]="showNoOptionsError ? 'block' : 'none'">Please select atleast one option!</span>
-                    <span class="expired-survey" [style.display]="isExpired ? 'block' : 'none'">This Survey is expired!</span>
+                    <span class="no-options-selected" [style.display]="showNoOptionsError ? 'block' : 'none'">Please
+                        select atleast one option!</span>
+                    <span class="expired-survey" [style.display]="isExpired ? 'block' : 'none'">This Survey is
+                        expired!</span>
                     <span></span>
                     <button (click)="onSubmit()" [disabled]="isExpired || !hasQuestions">Complete survey</button>
                 </div>
