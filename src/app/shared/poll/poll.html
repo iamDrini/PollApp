@@ -6,7 +6,12 @@
     <div class="content">
         <div class="detail-container">
             <div class="poll-section">
-                <span class="status-poll">{{status}}</span>
+                <div class="status-close-container">
+                    <span class="status-poll">{{status}}</span>
+                    <a routerLink="/" class="close-button">
+                        <img src="img/close.svg" alt="Close">
+                    </a>
+                </div>
                 <div class="date-cat-container">
                     @if (endDate) {
                     <span>{{status === 'Published' ? 'Ends on' : 'Expired since'}} {{endDate |
@@ -67,7 +72,7 @@
             <div class="results-questions">
                 @for(question of detail().questions; track question.id; let qIdx = $index) {
                 <div class="result-question">
-                    <h4>{{qIdx + 1}}. {{question.question_text}}</h4>
+                    <span>{{qIdx + 1}}. {{question.question_text}}</span>
                     <div class="result-options">
                         @for(option of question.options; track option.id; let oIdx = $index) {
                         <div class="result-option">

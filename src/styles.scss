@@ -26,14 +26,14 @@ h2{
 
 @media(max-width: 760px){
   h2{
-    font-size: 62px;
-    line-height:62px;
+    font-size: 62px !important;
+    line-height:62px !important;
   }
   h3{
-    font-size: 48px;
+    font-size: 48px !important;
   }
   h4{
-    font-size: 54px;
+    font-size: 54px !important;
   }
 }
 
