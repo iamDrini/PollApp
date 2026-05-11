@@ -4,7 +4,7 @@
         <a [routerLink]="'/'"><span>Cancel</span><img src="img/close.svg" alt="close"></a>
     </div>
     <div class="create-content">
-        <form [formGroup]="pollForm" (ngSubmit)="onSubmit()">
+        <form id="pollForm" [formGroup]="pollForm" (ngSubmit)="onSubmit()">
             <div class="poll-topic-container">
                 <div class="name-date-container">
                     <div class="form-group">
@@ -133,4 +133,7 @@
             }
         </form>
     </div>
+    <div class="btn-container-resp">
+                <button type="submit" form="pollForm">Publish <img src="img/check.png"></button>
+            </div>
 </section>
