@@ -49,7 +49,10 @@ export class Surveys {
   }
 
   getEndingSoonPolls(): Poll[] {
+    const now = new Date().getTime();
+
     return [...this.pollList()]
+      .filter((item) => new Date(item.ends_at).getTime() >= now)
       .sort((a, b) => new Date(a.ends_at).getTime() - new Date(b.ends_at).getTime())
       .slice(0, 3);
   }

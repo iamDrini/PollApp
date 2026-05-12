@@ -8,11 +8,16 @@
             <div class="poll-topic-container">
                 <div class="name-date-container">
                     <div class="form-group">
-                        <label>Survey name <span class="required">*</span></label>
+                        <div class="label-container">
+                            <label>Survey name <span class="required">*</span></label>
+                            <button type="button" class="clear-btn clear-btn-mobile" (click)="clearField('surveyName')">
+                                <img src="img/trash.svg" alt="clear">
+                            </button>
+                        </div>
                         <div class="input-container">
                             <input type="text" formControlName="surveyName"
                                 [class.invalid]="pollForm.get('surveyName')?.invalid && pollForm.get('surveyName')?.touched">
-                            <button type="button" class="clear-btn" (click)="clearField('surveyName')">
+                            <button type="button" class="clear-btn clear-btn-desktop" (click)="clearField('surveyName')">
                                 <img src="img/trash.svg" alt="clear">
                             </button>
                         </div>
@@ -22,17 +27,27 @@
                     </div>
                     <div class="date-category-container">
                         <div>
-                            <label>Set end date <span class="required">*</span></label>
+                            <div class="label-container">
+                                <label>Set end date <span class="required">*</span></label>
+                                <button type="button" class="clear-btn clear-btn-mobile" (click)="clearField('endDate')">
+                                    <img src="img/trash.svg" alt="clear">
+                                </button>
+                            </div>
                             <div class="input-container">
                                 <input type="date" formControlName="endDate"
                                     [class.invalid]="pollForm.get('endDate')?.invalid && pollForm.get('endDate')?.touched">
-                                <button type="button" class="clear-btn" (click)="clearField('endDate')">
+                                <button type="button" class="clear-btn clear-btn-desktop" (click)="clearField('endDate')">
                                     <img src="img/trash.svg" alt="clear">
                                 </button>
                             </div>
                             <div class="error-message"
                                 [class.visible]="pollForm.get('endDate')?.invalid && pollForm.get('endDate')?.touched">
-                                End date is required</div>
+                                @if (pollForm.get('endDate')?.hasError('required')) {
+                                    <span>End date is required</span>
+                                } @else if (pollForm.get('endDate')?.hasError('pastDate')) {
+                                    <span>End date cannot be in the past</span>
+                                }
+                            </div>
                         </div>
 
                         <div class="category-dropdown">
@@ -59,10 +74,15 @@
                     </div>
                 </div>
                 <div class="describing-container">
-                    <label>Describing text <span class="optional">(optional)</span></label>
+                    <div class="label-container">
+                        <label>Describing text <span class="optional">(optional)</span></label>
+                        <button type="button" class="clear-btn clear-btn-mobile" (click)="clearField('describingText')">
+                            <img src="img/trash.svg" alt="clear">
+                        </button>
+                    </div>
                     <div class="input-container">
                         <textarea formControlName="describingText"></textarea>
-                        <button type="button" class="clear-btn" (click)="clearField('describingText')">
+                        <button type="button" class="clear-btn clear-btn-desktop" (click)="clearField('describingText')">
                             <img src="img/trash.svg" alt="clear">
                         </button>
                     </div>
@@ -96,14 +116,22 @@
 
                         <div formArrayName="answers">
                             @for(answer of getAnswers(i).controls; track $index; let j = $index) {
-                            <div class="answer-row">
-                                <span class="answer-label">{{getAnswerLetter(j)}}.</span>
-                                <input type="text" [formControlName]="j" placeholder="Enter answer option"
-                                    [class.invalid]="getAnswers(i).at(j).invalid && getAnswers(i).at(j).touched">
-                                <button type="button" class="clear-btn small" (click)="removeAnswer(i, j)"
-                                    [disabled]="getAnswers(i).length <= 2">
-                                    <img src="img/trash.svg" alt="delete">
-                                </button>
+                            <div class="answer-container">
+                                <div class="answer-label-container">
+                                    <span class="answer-label">{{getAnswerLetter(j)}}.</span>
+                                    <button type="button" class="clear-btn clear-btn-mobile" (click)="removeAnswer(i, j)"
+                                        [disabled]="getAnswers(i).length <= 2">
+                                        <img src="img/trash.svg" alt="delete">
+                                    </button>
+                                </div>
+                                <div class="answer-input-container">
+                                    <input type="text" [formControlName]="j" placeholder="Enter answer option"
+                                        [class.invalid]="getAnswers(i).at(j).invalid && getAnswers(i).at(j).touched">
+                                    <button type="button" class="clear-btn clear-btn-desktop" (click)="removeAnswer(i, j)"
+                                        [disabled]="getAnswers(i).length <= 2">
+                                        <img src="img/trash.svg" alt="delete">
+                                    </button>
+                                </div>
                             </div>
                             }
                         </div>

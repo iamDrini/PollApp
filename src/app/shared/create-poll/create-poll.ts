@@ -40,7 +40,7 @@ export class CreatePoll {
   pollForm = this.fb.group({
     surveyName: ['', Validators.required],
     describingText: [''],
-    endDate: ['', Validators.required],
+    endDate: ['', [Validators.required, this.noPastDateValidator()]],
     category: [''],
     questions: this.fb.array([], Validators.required)
   });
@@ -94,6 +94,22 @@ export class CreatePoll {
 
   createAnswer() {
     return this.fb.control('', Validators.required);
+  }
+
+  /**
+   * Custom validator ensuring the selected date is not in the past
+   * Compares the input date with today's date
+   */
+  noPastDateValidator() {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (!control.value) {
+        return null;
+      }
+      const selectedDate = new Date(control.value);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      return selectedDate >= today ? null : { pastDate: true };
+    };
   }
 
   /**

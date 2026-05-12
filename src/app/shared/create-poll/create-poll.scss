@@ -4,6 +4,7 @@ section {
     border-top-right-radius: 100px;
     max-width: 1620px;
     margin: 0 auto;
+    height: 100vh;
 }
 
 form {
@@ -343,8 +344,55 @@ form {
     }
 }
 
+.answer-container {
+    margin-bottom: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.answer-label-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+
+    .answer-label {
+        flex-shrink: 0;
+    }
+}
+
+.answer-input-container {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+
+    input {
+        flex: 1;
+        border-top-right-radius: 20px;
+        border-bottom-right-radius: 5px;
+        border-bottom-left-radius: 5px;
+        border-top-left-radius: 5px;
+        padding: 7px 13px;
+        border-style: none;
+        height: 100%;
+    }
+}
+
+.label-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
 .clear-btn {
     background-color: transparent;
+}
+
+.clear-btn-mobile {
+    display: none;
 }
 
 .btn-container {
@@ -493,6 +541,14 @@ textarea.invalid {
 }
 
 @media(max-width: 845px) {
+    .clear-btn-mobile {
+        display: block;
+    }
+
+    .clear-btn-desktop {
+        display: none;
+    }
+
     .question-content {
         flex-direction: column;
         margin-top: 48px;

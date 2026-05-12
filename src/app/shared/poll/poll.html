@@ -33,7 +33,8 @@
                             @for(option of question.options; track option.id; let idx = $index){
                             <div class="form-option">
                                 <input type="checkbox" [formControl]="optionControls[option.id]"
-                                    [id]="'option-' + option.id" [disabled]="isExpired">
+                                    [id]="'option-' + option.id" [disabled]="isExpired"
+                                    (change)="onSelectionChanged()">
                                 <label class="option-text"
                                     [for]="'option-' + option.id"><b>{{getOptionLetter(idx)}}.</b>
                                     {{option.option_text}}</label>
@@ -44,7 +45,7 @@
                             <div class="form-option">
                                 <input type="radio" [formControl]="questionControls[question.id]" [value]="option.id"
                                     [name]="'question-' + question.id" [id]="'option-' + option.id"
-                                    [disabled]="isExpired">
+                                    [disabled]="isExpired" (change)="onSelectionChanged()">
                                 <label class="option-text"
                                     [for]="'option-' + option.id"><b>{{getOptionLetter(idx)}}.</b>
                                     {{option.option_text}}</label>
@@ -60,6 +61,7 @@
                 <div class="submit-container">
                     <span class="no-options-selected" [style.display]="showNoOptionsError ? 'block' : 'none'">Please
                         select atleast one option!</span>
+                    <span class="already-voted" [style.display]="showAlreadyVotedError ? 'block' : 'none'">You've already voted!</span>
                     <span class="expired-survey" [style.display]="isExpired ? 'block' : 'none'">This Survey is
                         expired!</span>
                     <span></span>
@@ -83,10 +85,10 @@
                             <div class="progress-wrapper">
                                 <div class="progress">
                                     <div class="progress-bar"
-                                        [style.width.%]="getVotePercentage(option.votes, question)" role="progressbar">
+                                        [style.width.%]="getDisplayedVotePercentage(option.id, question)" role="progressbar">
                                     </div>
                                 </div>
-                                <span class="percentage">{{getVotePercentage(option.votes, question)}}%</span>
+                                <span class="percentage">{{getDisplayedVotePercentage(option.id, question)}}%</span>
                             </div>
                         </div>
                         }
