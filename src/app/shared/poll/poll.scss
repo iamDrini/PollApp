@@ -97,7 +97,8 @@ section {
 }
 
 .mult-choice-section {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     padding: 40px 0 28px 0;
     gap: 24px;
 
@@ -341,6 +342,7 @@ section {
 
 @media(max-width: 650px) {
     .mult-choice-section {
+        display:flex;
         flex-direction: column;
     }
 
