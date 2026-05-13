@@ -12,8 +12,14 @@ section {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    a{
+        cursor: pointer;
+        &:hover{
+            transform: scale(1.1);
+        }
+    }
 
-    a {
+    .create-link {
         font-family: 'Nokora';
         font-weight: 700;
         font-size: 18px;
@@ -95,6 +101,12 @@ section {
     padding: 40px 0 28px 0;
     gap: 24px;
 
+    .no-data-span{
+        font-family: 'Mulish';
+        font-weight: 700;
+        font-size: 18px;
+    }
+
     .mult-choice-question {
         display: flex;
         flex-direction: column;
@@ -112,6 +124,17 @@ section {
             gap: 12px;
             margin-top: 12px;
             margin-bottom: 12px;
+
+            &.expired-option {
+                .option-text {
+                    cursor: default;
+                }
+
+                input[type="checkbox"],
+                input[type="radio"] {
+                    cursor: default;
+                }
+            }
 
             input[type="checkbox"],
             input[type="radio"] {
@@ -168,8 +191,12 @@ section {
         border-radius: 10px;
         background-color: #FFB7704D;
 
-        &:hover {
+        &:hover:not(:disabled) {
             background-color: #FFB770;
+        }
+
+        &:disabled {
+            cursor: default;
         }
     }
 
@@ -226,12 +253,15 @@ section {
     }
 
     .result-question {
+        display:flex;
+        flex-direction: column;
+        gap: 16px;
+        
         span {
             font-family: 'Mulish';
             font-weight: 700;
             font-size: 18px;
             color: #221227;
-            margin-bottom: 16px;
         }
 
         .result-options {

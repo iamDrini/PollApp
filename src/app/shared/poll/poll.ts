@@ -80,13 +80,19 @@ export class Poll {
       return;
     }
 
-    this.questionControls[question.id] = new FormControl(null);
+    this.questionControls[question.id] = new FormControl({
+      value: null,
+      disabled: this.isVotingDisabled,
+    });
   }
 
   /** Creates checkbox controls for all options of a multi-select question */
   private createCheckboxControls(question: Question): void {
     question.options.forEach((option) => {
-      this.optionControls[option.id] = new FormControl(false);
+      this.optionControls[option.id] = new FormControl({
+        value: false,
+        disabled: this.isVotingDisabled,
+      });
     });
   }
 
@@ -113,6 +119,17 @@ export class Poll {
   /** Returns true if the poll has expired and no longer accepts votes */
   get isExpired(): boolean {
     return this.status === 'Expired';
+  }
+
+  /** Returns true if the poll has already been voted on in this browser */
+  get isAlreadyVoted(): boolean {
+    const pollId = this.detail().id;
+    return pollId > 0 && this.hasAlreadyVoted(pollId);
+  }
+
+  /** Returns true if voting should be disabled */
+  get isVotingDisabled(): boolean {
+    return this.isExpired || this.isAlreadyVoted;
   }
 
   get hasQuestions(): boolean {
@@ -162,6 +179,10 @@ export class Poll {
 
   /** Rebuilds local staged votes whenever checkbox/radio selection changes */
   onSelectionChanged(): void {
+    if (this.isVotingDisabled) {
+      return;
+    }
+
     const nextVoteDeltas = this.buildVoteDeltasFromSelection();
     this.localVoteDeltas.set(nextVoteDeltas);
     this.clearSelectionErrorIfNeeded(nextVoteDeltas);
@@ -209,7 +230,7 @@ export class Poll {
   async onSubmit() {
     const pollId = this.detail().id;
     
-    if (this.hasAlreadyVoted(pollId)) {
+    if (this.isAlreadyVoted) {
       this.showAlreadyVotedError = true;
       this.showNoOptionsError = false;
       return;

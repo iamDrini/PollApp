@@ -23,7 +23,12 @@
                         </div>
                         <div class="error-message"
                             [class.visible]="pollForm.get('surveyName')?.invalid && pollForm.get('surveyName')?.touched">
-                            Survey name is required</div>
+                            @if (pollForm.get('surveyName')?.hasError('required')) {
+                                <span>Survey name is required</span>
+                            } @else if (pollForm.get('surveyName')?.hasError('minlength')) {
+                                <span>Survey name must be at least 3 characters</span>
+                            }
+                        </div>
                     </div>
                     <div class="date-category-container">
                         <div>
@@ -103,7 +108,12 @@
                         [class.invalid]="question.get('questionText')?.invalid && question.get('questionText')?.touched">
                     <div class="error-message"
                         [class.visible]="question.get('questionText')?.invalid && question.get('questionText')?.touched">
-                        Question text is required</div>
+                        @if (question.get('questionText')?.hasError('required')) {
+                            <span>Question text is required</span>
+                        } @else if (question.get('questionText')?.hasError('minlength')) {
+                            <span>Question text must be at least 3 characters</span>
+                        }
+                    </div>
 
                     <div class="answers-section">
                         <div class="answers-header">

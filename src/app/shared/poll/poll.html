@@ -1,7 +1,9 @@
 <section>
     <div class="detail-header">
-        <img src="img/logo-dark.svg" alt="dark Logo">
-        <a routerLink="/create">Create survey</a>
+        <a routerLink="/">
+            <img src="img/logo-dark.svg" alt="dark Logo">
+        </a>
+        <a class="create-link" routerLink="/create">Create survey</a>
     </div>
     <div class="content">
         <div class="detail-container">
@@ -31,9 +33,9 @@
                         <form (ngSumbit)="onSubmit()">
                             @if (question.allow_multiple) {
                             @for(option of question.options; track option.id; let idx = $index){
-                            <div class="form-option">
+                            <div class="form-option" [class.expired-option]="isVotingDisabled">
                                 <input type="checkbox" [formControl]="optionControls[option.id]"
-                                    [id]="'option-' + option.id" [disabled]="isExpired"
+                                    [id]="'option-' + option.id" [disabled]="isVotingDisabled"
                                     (change)="onSelectionChanged()">
                                 <label class="option-text"
                                     [for]="'option-' + option.id"><b>{{getOptionLetter(idx)}}.</b>
@@ -42,10 +44,10 @@
                             }
                             } @else {
                             @for(option of question.options; track option.id; let idx = $index){
-                            <div class="form-option">
+                            <div class="form-option" [class.expired-option]="isVotingDisabled">
                                 <input type="radio" [formControl]="questionControls[question.id]" [value]="option.id"
                                     [name]="'question-' + question.id" [id]="'option-' + option.id"
-                                    [disabled]="isExpired" (change)="onSelectionChanged()">
+                                    [disabled]="isVotingDisabled" (change)="onSelectionChanged()">
                                 <label class="option-text"
                                     [for]="'option-' + option.id"><b>{{getOptionLetter(idx)}}.</b>
                                     {{option.option_text}}</label>
@@ -55,17 +57,17 @@
                         </form>
                     </div>
                     } @empty {
-                    <span>No Data available!</span>
+                    <span class="no-data-span">No Data available!</span>
                     }
                 </div>
                 <div class="submit-container">
                     <span class="no-options-selected" [style.display]="showNoOptionsError ? 'block' : 'none'">Please
                         select atleast one option!</span>
-                    <span class="already-voted" [style.display]="showAlreadyVotedError ? 'block' : 'none'">You've already voted!</span>
+                    <span class="already-voted" [style.display]="(showAlreadyVotedError || isAlreadyVoted) ? 'block' : 'none'">You've already voted!</span>
                     <span class="expired-survey" [style.display]="isExpired ? 'block' : 'none'">This Survey is
                         expired!</span>
                     <span></span>
-                    <button (click)="onSubmit()" [disabled]="isExpired || !hasQuestions">Complete survey</button>
+                    <button (click)="onSubmit()" [disabled]="isVotingDisabled || !hasQuestions">Complete survey</button>
                 </div>
             </div>
         </div>

@@ -541,6 +541,9 @@ textarea.invalid {
 }
 
 @media(max-width: 845px) {
+    section{
+        height: unset;
+    }
     .clear-btn-mobile {
         display: block;
     }
@@ -593,14 +596,25 @@ textarea.invalid {
 @media(max-width: 450px) {
     .input-container {
 
-
         input,
         textarea {
             min-width: unset;
         }
     }
 
+    .answers-header {
+        flex-direction: column;
+        gap: 8px;
+    }
+
     .create-content {
         padding: 16px;
+    }
+
+    .btn-container-resp {
+        button {
+            padding: 6px 8px;
+            margin-bottom: 16px;
+        }
     }
 }

@@ -25,7 +25,7 @@ export class CreatePoll {
   private readonly cdr = inject(ChangeDetectorRef);
   isCategoryDropdownOpen = false;
   showSuccessOverlay = false;
-  selectedCategory = 'Choose category';
+  selectedCategory = 'Team Activities';
   
   /** Available poll categories for selection */
   categories = [
@@ -38,7 +38,7 @@ export class CreatePoll {
   ];
 
   pollForm = this.fb.group({
-    surveyName: ['', Validators.required],
+    surveyName: ['', [Validators.required, Validators.minLength(3)]],
     describingText: [''],
     endDate: ['', [Validators.required, this.noPastDateValidator()]],
     category: [''],
@@ -83,7 +83,7 @@ export class CreatePoll {
    */
   createQuestion() {
     return this.fb.group({
-      questionText: ['', Validators.required],
+      questionText: ['', [Validators.required, Validators.minLength(3)]],
       allowMultiple: [false],
       answers: this.fb.array([
         this.createAnswer(),

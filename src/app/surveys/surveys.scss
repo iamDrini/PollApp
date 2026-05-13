@@ -128,8 +128,7 @@ section {
 
                 img {
                     display: none;
-                    width: 30px;
-                    height: 18px;
+                    width: 15px;
                     object-fit: contain;
                 }
 
@@ -317,6 +316,11 @@ section {
         span {
             font-size: 16px;
         }
+    }
+
+    .category-dropdown-menu{
+        right: unset;
+        left: 0;
     }
     .ending-surveys-polls {
         gap: 16px;
