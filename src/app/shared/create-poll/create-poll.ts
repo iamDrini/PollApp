@@ -23,6 +23,7 @@ export class CreatePoll {
   private readonly surveyService = inject(SurveyService);
   private readonly router = inject(Router);
   private readonly cdr = inject(ChangeDetectorRef);
+  readonly minEndDate = this.getTodayDateString();
   isCategoryDropdownOpen = false;
   showSuccessOverlay = false;
   selectedCategory = 'Team Activities';
@@ -110,6 +111,14 @@ export class CreatePoll {
       today.setHours(0, 0, 0, 0);
       return selectedDate >= today ? null : { pastDate: true };
     };
+  }
+
+  private getTodayDateString(): string {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
   }
 
   /**

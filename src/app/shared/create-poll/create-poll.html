@@ -42,6 +42,7 @@
                             </div>
                             <div class="input-container">
                                 <input type="date" formControlName="endDate"
+                                    [attr.min]="minEndDate"
                                     [class.invalid]="pollForm.get('endDate')?.invalid && pollForm.get('endDate')?.touched">
                                 <button type="button" class="clear-btn clear-btn-desktop" (click)="clearField('endDate')">
                                     <img src="img/trash.svg" alt="clear">
@@ -88,7 +89,7 @@
                         </button>
                     </div>
                     <div class="input-container">
-                        <textarea formControlName="describingText"></textarea>
+                        <textarea formControlName="describinfText"></textarea>
                         <button type="button" class="clear-btn clear-btn-desktop" (click)="clearField('describingText')">
                             <img src="img/trash.svg" alt="clear">
                         </button>

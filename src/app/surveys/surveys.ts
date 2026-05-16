@@ -52,7 +52,7 @@ export class Surveys {
     const now = new Date().getTime();
 
     return [...this.pollList()]
-      .filter((item) => new Date(item.ends_at).getTime() >= now)
+      .filter((item) => this.getPollEndTimestamp(item.ends_at) > now)
       .sort((a, b) => new Date(a.ends_at).getTime() - new Date(b.ends_at).getTime())
       .slice(0, 3);
   }
@@ -62,7 +62,7 @@ export class Surveys {
 
     return this.filterByCategory(
       [...this.pollList()]
-        .filter((item) => new Date(item.ends_at).getTime() >= now)
+        .filter((item) => this.getPollEndTimestamp(item.ends_at) > now)
         .sort((a, b) => new Date(a.ends_at).getTime() - new Date(b.ends_at).getTime()),
     );
   }
@@ -72,9 +72,16 @@ export class Surveys {
 
     return this.filterByCategory(
       [...this.pollList()]
-        .filter((item) => new Date(item.ends_at).getTime() < now)
+        .filter((item) => this.getPollEndTimestamp(item.ends_at) <= now)
         .sort((a, b) => new Date(b.ends_at).getTime() - new Date(a.ends_at).getTime()),
     );
+  }
+
+  private getPollEndTimestamp(endDate: string): number {
+    const end = new Date(endDate);
+    end.setHours(0, 0, 0, 0);
+    end.setDate(end.getDate() + 1);
+    return end.getTime();
   }
 
   filterByCategory(polls: Poll[]): Poll[] {
