@@ -72,7 +72,6 @@
             </div>
         </div>
         <div class="results-container">
-            @if (hasAnyVotes()) {
             <div class="results-header">
                 <h3>Survey results <span class="live">LIVE</span></h3>
             </div>
@@ -98,11 +97,6 @@
                 </div>
                 }
             </div>
-            } @else {
-            <div class="no-results">
-                <p>Results will be shown here after participants complete the survey.</p>
-            </div>
-            }
         </div>
     </div>
 </section>
