@@ -27,6 +27,8 @@
                                 <span>Survey name is required</span>
                             } @else if (pollForm.get('surveyName')?.hasError('minlength')) {
                                 <span>Survey name must be at least 3 characters</span>
+                            } @else if(pollForm.get('surveyName')?.hasError('pattern')) {
+                                <span>Survey name is not valid</span>
                             }
                         </div>
                     </div>
@@ -112,6 +114,8 @@
                             <span>Question text is required</span>
                         } @else if (question.get('questionText')?.hasError('minlength')) {
                             <span>Question text must be at least 3 characters</span>
+                        } @else if(question.get('questionText')?.hasError('pattern')) {
+                                <span>Question is not valid</span>
                         }
                     </div>
 
@@ -142,11 +146,20 @@
                                         <img src="img/trash.svg" alt="delete">
                                     </button>
                                 </div>
+                                <div class="error-message"
+                                    [class.visible]="getAnswers(i).at(j).invalid && getAnswers(i).at(j).touched">
+                                    @if (getAnswers(i).at(j).hasError('required')) {
+                                        <span>Answer is required</span>
+                                    } @else if (getAnswers(i).at(j).hasError('pattern')) {
+                                        <span>Answer is not valid</span>
+                                    }
+                                </div>
                             </div>
                             }
                         </div>
-                        <div class="error-message" [class.visible]="getAnswers(i).invalid && getAnswers(i).touched">At
-                            least 2 filled answers are required</div>
+                        <div class="error-message" [class.visible]="getAnswers(i).invalid && getAnswers(i).touched">
+                            At least 2 filled answers are required
+                        </div>
                         <button type="button" class="add-btn" (click)="addAnswer(i)">
                             <span>Add answer</span>
                             <img src="img/plus.svg" alt="add">

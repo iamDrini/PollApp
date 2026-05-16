@@ -38,7 +38,7 @@ export class CreatePoll {
   ];
 
   pollForm = this.fb.group({
-    surveyName: ['', [Validators.required, Validators.minLength(3)]],
+    surveyName: ['', [Validators.required, Validators.minLength(3), Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
     describingText: [''],
     endDate: ['', [Validators.required, this.noPastDateValidator()]],
     category: [''],
@@ -83,7 +83,7 @@ export class CreatePoll {
    */
   createQuestion() {
     return this.fb.group({
-      questionText: ['', [Validators.required, Validators.minLength(3)]],
+      questionText: ['', [Validators.required, Validators.minLength(3), Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]],
       allowMultiple: [false],
       answers: this.fb.array([
         this.createAnswer(),
@@ -93,7 +93,7 @@ export class CreatePoll {
   }
 
   createAnswer() {
-    return this.fb.control('', Validators.required);
+    return this.fb.control('', [Validators.required, Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]);
   }
 
   /**
